@@ -30,7 +30,7 @@
 
 ## 3. Deployment Metadata
 
-- Deployment date: 2025-01-28
+- Deployment date: 2025-07-25
 - Deployer address: `0x7F1c622f76Ac6329a8e8371eb955Ca28ED29803a`
 - Source JSON: `deployments/56/deployment.json`
 - File timestamp: `1753426332`
