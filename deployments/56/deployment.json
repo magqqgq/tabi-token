@@ -1,0 +1,23 @@
+{
+  "chainId": 56,
+  "contracts": {
+    "TABIToken": {
+      "implementation": "0x6A381960A1Af80937B0b1EE849cB1aD7c3FD6032",
+      "proxy": "0xdF14f38ccdACf43056fDc44BcDf8E2c3ceE88001",
+      "admin": "0x7F1c622f76Ac6329a8e8371eb955Ca28ED29803a",
+      "name": "TABI",
+      "symbol": "TABI",
+      "decimals": 18
+    }
+  },
+  "network": "bsc",
+  "timestamp": "1753426332",
+  "deploymentNotes": {
+    "deploymentDate": "2025-01-28",
+    "deployerAddress": "0x7F1c622f76Ac6329a8e8371eb955Ca28ED29803a",
+    "gasUsed": "2384141",
+    "gasPrice": "0.1 gwei",
+    "totalCost": "0.0002384141 BNB"
+  }
+}
+
