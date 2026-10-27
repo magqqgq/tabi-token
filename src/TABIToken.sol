@@ -29,6 +29,12 @@ contract TABIToken is
     }
 
     function initialize(address admin) public initializer {
+        // Fail early on a zero admin: all three roles granted below would land
+        // on address(0), permanently bricking mint/pause/upgrade operations.
+        if (admin == address(0)) {
+            revert("TABIToken: zero admin");
+        }
+
         __ERC20_init("TABI", "TABI");
         __ERC20Burnable_init();
         __ERC20Pausable_init();
@@ -52,8 +58,6 @@ contract TABIToken is
     function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
     }
-
-
 
     // The following functions are overrides required by Solidity.
 

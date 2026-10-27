@@ -2,5 +2,15 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+# Pin the compiler version so CI and local builds produce identical bytecode.
+solc_version = "0.8.28"
+
+[profile.ci]
+# CI profile: fail on unchecked calls such as low-level return-value mistakes.
+fuzz = { runs = 5000 }
+
+[rpc_endpoints]
+# Default testnet RPC used by fork-based tests and verification scripts.
+tabi_testnet = "${TABI_TESTNET_RPC_URL}"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

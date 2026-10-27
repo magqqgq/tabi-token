@@ -81,6 +81,35 @@ contract TABITokenTest is Test {
     }
 
     /**
+     * @dev initialize must reject a zero admin address: with `initialize(0)`,
+     * DEFAULT_ADMIN/MINTER/PAUSER roles would land on address(0) and all
+     * privileged operations would be permanently bricked.
+     */
+    function test_InitializeRevertsForZeroAdmin() public {
+        TABIToken freshImplementation = new TABIToken();
+        bytes memory badInitData = abi.encodeWithSelector(TABIToken.initialize.selector, address(0));
+
+        // Deploying a proxy with the invalid initData must revert.
+        vm.expectRevert();
+        new ERC1967Proxy(address(freshImplementation), badInitData);
+
+        // Even direct initialization on a live proxy copy must revert.
+        TABIToken direct = new TABIToken();
+        vm.expectRevert();
+        direct.initialize(address(0));
+    }
+
+    /**
+     * @dev initialize is guarded by `initializer`: a second call after the
+     * initial setup must always revert, including through an upgrade call
+     * passing non-empty initData targeting address(this).
+     */
+    function test_ReInitializationSecretAttemptsRevert() public {
+        vm.expectRevert();
+        token.initialize(makeAddr("newAdmin"));
+    }
+
+    /**
      * @dev Test suite for contract upgradeability
      */
     function test_Upgradeability() public {
@@ -95,10 +124,11 @@ contract TABITokenTest is Test {
 
         // Upgrade to new implementation
         vm.startPrank(admin);
-        UUPSUpgradeable(address(token)).upgradeToAndCall(
-            address(newImplementation),
-            "" // No initialization data needed
-        );
+        UUPSUpgradeable(address(token))
+            .upgradeToAndCall(
+                address(newImplementation),
+                "" // No initialization data needed
+            );
         vm.stopPrank();
 
         // Verify new implementation
